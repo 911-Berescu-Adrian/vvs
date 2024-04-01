@@ -1,8 +1,14 @@
+import domain.Nota;
 import domain.Student;
+import domain.Tema;
 import org.junit.jupiter.api.Test;
+import repository.NotaXMLRepository;
 import repository.StudentXMLRepository;
+import repository.TemaXMLRepository;
 import service.Service;
+import validation.NotaValidator;
 import validation.StudentValidator;
+import validation.TemaValidator;
 import validation.Validator;
 
 import java.io.File;
@@ -853,4 +859,75 @@ public class ServiceTest {
         // Assert
         assertEquals(0, result);
     }
+
+    @Test
+    public void CFG_TC_1() {
+        // Arrange
+        String id = "PUY4";
+        String description = "miau";
+        int startline = 5;
+        int deadline = 8;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(0, result);
+    }
+
+    @Test
+    public void CFG_TC_2() {
+        // Arrange
+        String id = "PUY4";
+        String description = "miau";
+        int startline = 9;
+        int deadline = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
 }
