@@ -930,4 +930,110 @@ public class ServiceTest {
         assertEquals(1, result);
     }
 
+    @Test
+    public void CFG_TC_3() {
+        // Arrange
+        String id = "";
+        String description = "miau";
+        int startline = 6;
+        int deadline = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void CFG_TC_4() {
+        // Arrange
+        String id = "PUY4";
+        String description = "";
+        int startline = 6;
+        int deadline = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+
+    @Test
+    public void CFG_TC_5() {
+        // Arrange
+        String id = "PUY4";
+        String description = "miau";
+        int startline = 1503;
+        int deadline = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
 }
