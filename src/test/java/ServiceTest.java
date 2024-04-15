@@ -1036,4 +1036,144 @@ public class ServiceTest {
         assertEquals(1, result);
     }
 
+
+    @Test
+    public void BB_TC_1() {
+        // Arrange
+        String id = "PUY4";
+        String nume = "miau";
+        int grupa = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        StudentValidator validator = new StudentValidator();
+        StudentXMLRepository studentRepository = new StudentXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Student save(Student student) {
+                try {
+                    validator.validate(student);
+                    return student;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(studentRepository, null  , null);
+
+        // Act
+        int result = service.saveStudent(id, nume, grupa);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void BB_TC_2() {
+        // Arrange
+        String id = "PUY4";
+        String description = "miau";
+        int startline = 1503;
+        int deadline = 6;
+        String xmlFilePath = "students_test.xml";
+
+
+        // Create actual repository instance
+        TemaValidator validator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    validator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(null, temaRepository  , null);
+
+        // Act
+        int result = service.saveTema(id, description, deadline, startline);
+
+        // Assert
+        assertEquals(1, result);
+    }
+
+    @Test
+    public void BB_TC_3 () {
+        // Arrange
+        String id = "PUY4";
+        String nume = "miau";
+        int grupa = 6;
+        String xmlFilePath = "students_test.xml";
+        String descriere = "aosdfkoas";
+        int startline = 4;
+        int deadline = 8;
+        int predata = 6;
+        String feedback = "ok";
+        double nota = 6;
+
+
+        StudentValidator studValidator = new StudentValidator();
+        StudentXMLRepository studentRepository = new StudentXMLRepository(studValidator, xmlFilePath) {
+            @Override
+            public Student save(Student student) {
+                try {
+                    studValidator.validate(student);
+                    return student;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        TemaValidator temaValidator = new TemaValidator();
+        TemaXMLRepository temaRepository = new TemaXMLRepository(temaValidator, xmlFilePath) {
+            @Override
+            public Tema save(Tema tema) {
+                try {
+                    temaValidator.validate(tema);
+                    return tema;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+
+        // Create actual repository instance
+        NotaValidator validator = new NotaValidator();
+        NotaXMLRepository notaRepository = new NotaXMLRepository(validator, xmlFilePath) {
+            // Override save method to always return null, simulating failure
+            @Override
+            public Nota save(Nota nota) {
+                try {
+                    validator.validate(nota);
+                    return nota;
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        };
+
+        // Create Service instance with actual repository
+        Service service = new Service(studentRepository, temaRepository, notaRepository);
+
+        // Act
+        int result = service.saveStudent(id, nume, grupa);
+        result += service.saveTema(id, descriere, deadline, startline);
+        result += service.saveNota(id, id, nota, predata, feedback);
+
+
+        // Assert
+        assertEquals(0, result);
+    }
+
 }
